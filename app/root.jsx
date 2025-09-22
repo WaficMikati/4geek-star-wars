@@ -1,6 +1,7 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
 import Navbar from "./components/Navbar.jsx";
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { FavoritesProvider } from "./store/favContext.jsx";
 
 export default function App() {
   return (
@@ -15,7 +16,9 @@ export default function App() {
         <Navbar />
 
         <main className="container mt-4">
-          <Outlet />
+          <FavoritesProvider>
+            <Outlet />
+          </FavoritesProvider>
         </main>
 
         <ScrollRestoration />
