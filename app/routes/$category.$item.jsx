@@ -16,8 +16,8 @@ export default function Item() {
 
   return (
     <>
-      {dataArr.map((e, i) => (
-        <h3 key={i}>{`${e[0]}: ${e[1]}`}</h3>
+      {dataArr.map(([property, info], i) => (
+        <h3 key={i}>{`${property}: ${info}`}</h3>
       ))}
     </>
   )

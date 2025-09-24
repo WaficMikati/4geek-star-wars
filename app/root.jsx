@@ -1,6 +1,6 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
-import Navbar from "./components/Navbar.jsx";
 import 'bootstrap/dist/css/bootstrap.min.css'
+import Navbar from "./components/Navbar.jsx";
 import { FavoritesProvider } from "./store/favContext.jsx";
 
 export default function App() {
