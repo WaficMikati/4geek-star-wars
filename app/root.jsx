@@ -3,16 +3,16 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { Links, Meta, Outlet, Scripts } from 'react-router'
 import { Sidebar } from './components/Sidebar'
-import { SearchBar } from './components/SearchBar'
 import { FavoritesProvider } from './store/FavoritesContext'
+import { cachedFetch } from './store/cache'
 
 export default function App() {
   const [data, setData] = useState([])
 
   useEffect(() => {
-    fetch('https://swapi.tech/api')
-      .then(r => r.json())
-      .then(j => setData(Object.entries(j.result)))
+    cachedFetch('https://swapi.tech/api').then(j =>
+      setData(Object.entries(j.result))
+    )
   }, [])
 
   return (
@@ -33,15 +33,14 @@ export default function App() {
       <body className='bg-black'>
         <div className='container-fluid ps-0'>
           <div className='vh-100 row'>
-            <Sidebar data={data} />
-            <div className='col vh-100 container-fluid d-flex flex-column overflow-hidden'>
-              <FavoritesProvider>
-                <SearchBar />
+            <FavoritesProvider>
+              <Sidebar data={data} />
+              <div className='col vh-100 container-fluid d-flex flex-column overflow-hidden'>
                 <div className='flex-grow-1 overflow-hidden'>
                   <Outlet />
                 </div>
-              </FavoritesProvider>
-            </div>
+              </div>
+            </FavoritesProvider>
           </div>
         </div>
 

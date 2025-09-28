@@ -1,26 +1,45 @@
-import { useState, createContext } from 'react'
+import { useState, createContext, useEffect } from 'react'
 
 const FavoritesContext = createContext([])
+const FAVORITES_KEY = 'swapi_favorites'
 
 const FavoritesProvider = ({ children }) => {
   const [favorites, setFavorites] = useState([])
 
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(FAVORITES_KEY)
+      if (saved) {
+        setFavorites(JSON.parse(saved))
+      }
+    } catch (error) {
+      console.warn('Failed to load favorites from localStorage:', error)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (favorites.length > 0) {
+      try {
+        localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites))
+      } catch (error) {
+        console.warn('Failed to save favorites to localStorage:', error)
+      }
+    }
+  }, [favorites])
+
   const addFavorite = item => {
     setFavorites(prev => {
-      // Find if category already exists
       const categoryIndex = prev.findIndex(
         cat => cat.category === item.category
       )
 
       if (categoryIndex >= 0) {
-        // Category exists, check if item already exists in that category
         const itemExists = prev[categoryIndex].items.some(
           existingItem => existingItem.id === item.id
         )
 
-        if (itemExists) return prev // Item already exists, no change
+        if (itemExists) return prev
 
-        // Add item to existing category
         const updatedCategories = [...prev]
         updatedCategories[categoryIndex] = {
           ...updatedCategories[categoryIndex],
@@ -28,7 +47,6 @@ const FavoritesProvider = ({ children }) => {
         }
         return updatedCategories
       } else {
-        // Create new category with this item
         return [...prev, { category: item.category, items: [item] }]
       }
     })
@@ -39,7 +57,6 @@ const FavoritesProvider = ({ children }) => {
       return prev
         .map(categoryObj => {
           if (categoryObj.category === item.category) {
-            // Remove item from this category
             const filteredItems = categoryObj.items.filter(
               existingItem => existingItem.id !== item.id
             )
@@ -47,7 +64,7 @@ const FavoritesProvider = ({ children }) => {
           }
           return categoryObj
         })
-        .filter(categoryObj => categoryObj.items.length > 0) // Remove empty categories
+        .filter(categoryObj => categoryObj.items.length > 0)
     })
   }
 
@@ -63,7 +80,6 @@ const FavoritesProvider = ({ children }) => {
         )
 
         if (itemExists) {
-          // Remove item
           const updatedCategories = [...prev]
           updatedCategories[categoryIndex] = {
             ...updatedCategories[categoryIndex],
@@ -71,10 +87,8 @@ const FavoritesProvider = ({ children }) => {
               existingItem => existingItem.id !== item.id
             )
           }
-          // Filter out empty categories
           return updatedCategories.filter(cat => cat.items.length > 0)
         } else {
-          // Add item to existing category
           const updatedCategories = [...prev]
           updatedCategories[categoryIndex] = {
             ...updatedCategories[categoryIndex],
@@ -83,7 +97,6 @@ const FavoritesProvider = ({ children }) => {
           return updatedCategories
         }
       } else {
-        // Create new category with this item
         return [...prev, { category: item.category, items: [item] }]
       }
     })

@@ -1,10 +1,10 @@
 import { Link, useLoaderData, useParams } from 'react-router'
 import { Details } from '../components/Details'
+import { cachedFetch } from '../store/cache'
 
 export async function loader({ params }) {
   const { category, id } = params
-  const response = await fetch(`https://swapi.tech/api/${category}/${id}`)
-  const json = await response.json()
+  const json = await cachedFetch(`https://swapi.tech/api/${category}/${id}`)
   const dataArray = Object.entries(json.result.properties).filter(
     ([name]) => !['created', 'edited', 'url'].includes(name)
   )
@@ -23,17 +23,9 @@ export async function loader({ params }) {
       name,
       Array.isArray(info)
         ? await Promise.all(
-            info.map(url =>
-              fetch(url)
-                .then(r => r.json())
-                .then(d => d.result.properties)
-            )
+            info.map(url => cachedFetch(url).then(d => d.result.properties))
           )
-        : [
-            await fetch(info)
-              .then(r => r.json())
-              .then(d => d.result.properties)
-          ]
+        : [await cachedFetch(info).then(d => d.result.properties)]
     ])
   )
 
@@ -45,7 +37,6 @@ export default function Item() {
   const fetchedData = useLoaderData()
   const data = fetchedData.data
   const links = fetchedData.links
-  console.log(links)
 
   return (
     <div className='row overflow-scroll h-100 g-0 justify-content-center align-items-center px-2'>
