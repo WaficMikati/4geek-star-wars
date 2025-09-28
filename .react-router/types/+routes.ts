@@ -18,9 +18,10 @@ type Pages = {
       "category": string;
     };
   };
-  "/:category/:item": {
+  "/:category/:id/:item": {
     params: {
       "category": string;
+      "id": string;
       "item": string;
     };
   };
@@ -29,7 +30,7 @@ type Pages = {
 type RouteFiles = {
   "root.jsx": {
     id: "root";
-    page: "/" | "/:category" | "/:category/:item";
+    page: "/" | "/:category" | "/:category/:id/:item";
   };
   "routes/_index.jsx": {
     id: "routes/_index";
@@ -39,8 +40,8 @@ type RouteFiles = {
     id: "routes/$category";
     page: "/:category";
   };
-  "routes/$category.$item.jsx": {
-    id: "routes/$category.$item";
-    page: "/:category/:item";
+  "routes/$category.$id.$item.jsx": {
+    id: "routes/$category.$id.$item";
+    page: "/:category/:id/:item";
   };
 };
