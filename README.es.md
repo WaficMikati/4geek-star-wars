@@ -1,16 +1,7 @@
-# React Router + Bootsrap Plantilla en Javascript
-Esta es mi plantilla ultra básica para iniciar un proyecto de React con React Router v7 y Bootstrap 5.3.8.
+# Banco de datos de Star Wars con SWAPI
 
-## Instrucciones
-```bash
-git clone https://github.com/WaficMikati/react-router-js-template.git
-```
-```bash
-cd react-router-js-template
-```
-```bash
-npm install
-```
-```bash
-npm run dev
-```
+Este fue un proyecto largo y fructífero del que me siento orgulloso.
+
+[Ver en vivo](https://swapi-wm.vercel.app)
+
+![Vista previa](public/images/preview.png)
