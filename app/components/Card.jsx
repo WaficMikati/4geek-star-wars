@@ -37,7 +37,9 @@ export function Card({ category, name, id }) {
         ></Link>
         <div className='ratio ratio-4x3'>
           <img
-            src={`/images/${category}/${item.replaceAll('_', '-')}.jpg`}
+            src={`/images/${category}/${item
+              .replaceAll('_', '-')
+              .replaceAll('/', '-')}.jpg`}
             className='card-img-top object-fit-cover'
           />
         </div>

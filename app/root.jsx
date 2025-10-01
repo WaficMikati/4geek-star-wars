@@ -5,6 +5,7 @@ import { Links, Meta, Outlet, Scripts } from 'react-router'
 import { Sidebar } from './components/Sidebar'
 import { FavoritesProvider } from './store/FavoritesContext'
 import { cachedFetch } from './store/cache'
+import { Stars } from './components/Stars/Stars'
 
 export default function App() {
   const [data, setData] = useState([])
@@ -31,6 +32,7 @@ export default function App() {
         <Links />
       </head>
       <body className='bg-black'>
+        <Stars />
         <div className='container-fluid ps-0'>
           <div className='vh-100 row'>
             <FavoritesProvider>

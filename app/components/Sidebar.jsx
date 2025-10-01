@@ -7,10 +7,12 @@ export function Sidebar({ data }) {
 
   return (
     <div className='col-2 col-xl-1 d-flex flex-column h-100 pe-0'>
-      <img
-        src='/images/logo.png'
-        className='img-fluid object-fit-contain'
-      />
+      <Link to='/'>
+        <img
+          src='/images/logo.png'
+          className='img-fluid object-fit-contain'
+        />
+      </Link>
       <div className='container-fluid p-0 mt-4'>
         {data.map(([category], i) => (
           <Link
